@@ -1,6 +1,6 @@
 {
   "name": "@applitools/microservices-were-made-for-testing",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "src/microservices-were-made-for-testing.js",
   "engines": {
@@ -27,8 +27,7 @@
     "postbuild": "npm run build:docker",
     "build:docker": "docker build -t applitools/microservices-were-made-for-testing --build-arg NPM_FILE=`cat ~/.npmrc` .",
     "postpublish": "npm run publish:docker",
-    "publish:docker": "docker tag applitools/microservices-were-made-for-testing applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:latest",
-    "deploy": "kdeploy deploy microservices-were-made-for-testing ${npm_package_version} -c worker -v ./node_modules/@applitools/rendering-grid-deployment ."
+    "publish:docker": "docker tag applitools/microservices-were-made-for-testing applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:latest"
   },
   "keywords": [
     "applitools",
@@ -52,7 +51,6 @@
   "devDependencies": {
     "@applitools/docker-compose-mocha": "^1.3.0",
     "@applitools/docker-compose-testkit": "^1.1.2",
-    "@applitools/rendering-grid-deployment": "^3.0.23",
     "chai": "^4.2.0",
     "eslint": "^6.2.1",
     "eslint-plugin-mocha-no-only": "^1.1.0",
