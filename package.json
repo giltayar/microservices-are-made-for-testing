@@ -1,6 +1,6 @@
 {
   "name": "@applitools/microservices-were-made-for-testing",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "src/microservices-were-made-for-testing.js",
   "engines": {
@@ -46,11 +46,12 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "express": "^4.17.1"
+    "fastify": "^2.7.1"
   },
   "devDependencies": {
     "@applitools/docker-compose-mocha": "^1.3.0",
     "@applitools/docker-compose-testkit": "^1.1.2",
+    "@applitools/http-commons": "^1.3.9",
     "chai": "^4.2.0",
     "eslint": "^6.2.1",
     "eslint-plugin-mocha-no-only": "^1.1.0",

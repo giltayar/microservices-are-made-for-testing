@@ -1,33 +1,29 @@
 'use strict'
 const path = require('path')
-const {describe, it, before, after} = require('mocha')
-const {expect} = require('chai')
-const fetch = require('node-fetch')
-const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
 const {
-  getAddressForService,
-  generateEnvVarsWithDependenciesVersions,
-} = require('@applitools/docker-compose-testkit')
+  describe = global.describe,
+  it = global.it,
+  before = global.before,
+  after = global.after,
+} = require('mocha')
+const {expect} = require('chai')
+const {fetchAsText} = require('@applitools/http-commons')
+const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
+const {getAddressForService} = require('@applitools/docker-compose-testkit')
 
 const app = require('../..')
 
 describe('microservices-were-made-for-testing it', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
   const envName = dockerComposeTool(before, after, composePath, {
-    shouldPullImages: !!process.env.NODE_ENV && process.env.NODE_ENV !== 'development',
     brutallyKill: true,
-    envVars: {
-      ...generateEnvVarsWithDependenciesVersions(require('../../package.json')),
-    },
   })
 
   const {baseUrl} = setupApp()
 
   it('should return OK on /', async () => {
-    const response = await fetch(`${baseUrl()}/`)
-
-    expect(response.status).to.equal(200)
-    expect(await response.text()).to.equal('OK')
+    const text = await fetchAsText(`${baseUrl()}/`)
+    expect(text).to.equal('OK')
   })
 
   it('should do something interesting...', async () => {
@@ -35,23 +31,19 @@ describe('microservices-were-made-for-testing it', function() {
     const someService =
       false && (await getAddressForService(envName, composePath, 'some-service', 80))
     expect(someService).to.be.false
-
-    const response = await fetch(`${baseUrl()}/`)
-
-    expect(response.status).to.equal(200)
-    expect(await response.text()).to.equal('OK')
   })
 })
 
 function setupApp() {
-  let server
+  let server, appInst
 
   before(async () => {
-    await new Promise((resolve, reject) => {
-      server = app({}).listen(err => (err ? reject(err) : resolve()))
-    })
+    appInst = await app()
+    await appInst.listen()
+    await appInst.ready()
+    server = appInst.server
   })
-  after(done => server.close(done))
+  after(done => appInst.close(done))
 
   return {
     baseUrl: () => `http://localhost:${server.address().port}`,

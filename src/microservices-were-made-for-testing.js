@@ -1,14 +1,14 @@
 'use strict'
-const express = require('express')
+const fastify = require('fastify')
 
 module.exports = createApp
 
-function createApp() {
-  const app = express()
+async function createApp() {
+  const app = fastify()
 
-  app.set('etag', false)
-
-  app.get('/', (_req, res) => res.send('OK'))
+  app.get('/', async () => {
+    return 'OK'
+  })
 
   return app
 }
