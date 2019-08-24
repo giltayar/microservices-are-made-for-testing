@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "scripts/run-microservices-were-made-for-testing.js",
-    "test": "npm run eslint && npm run test:mocha",
+    "test": "npm run eslint && npm run test:mocha-parallel",
     "test:mocha": "mocha --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
     "test:mocha-parallel": "mocha-parallel-tests --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
     "eslint": "eslint '**/*.js'",
