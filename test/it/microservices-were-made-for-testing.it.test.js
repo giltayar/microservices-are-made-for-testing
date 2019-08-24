@@ -2,7 +2,8 @@
 const path = require('path')
 const {describe, it, before, after, beforeEach} = require('mocha')
 const {expect} = require('chai')
-const {fetchAsText, fetchAsJson} = require('@applitools/http-commons')
+const {v4: uuid} = require('uuid')
+const {fetchAsText, fetchAsJson, fetchAsJsonWithJsonBody} = require('@applitools/http-commons')
 const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
 const {getAddressForService} = require('@applitools/docker-compose-testkit')
 const {connect, close, resetTable, createSchema} = require('../commons/postgres-commons')
@@ -54,7 +55,15 @@ describe('microservices-were-made-for-testing (it)', function() {
     expect(text).to.equal('OK')
   })
 
-  it('return empty array on no users', async () => {
+  it('should return empty array on no users', async () => {
     expect(await fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([])
+  })
+
+  it('should return users after they were added', async () => {
+    const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
+
+    await fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant.id}`, tenant)
+
+    expect(await fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([tenant])
   })
 })

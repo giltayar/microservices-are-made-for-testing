@@ -1,6 +1,7 @@
 'use strict'
 const fastify = require('fastify')
 const {Client} = require('pg')
+const {sqlRowsToObjects} = require('./field-mappings')
 
 async function createApp({databaseConnectionString}) {
   const app = fastify()
@@ -14,34 +15,31 @@ async function createApp({databaseConnectionString}) {
   })
 
   app.get('/api/tenants', async () => {
-    const response = await client.query('SELECT first_name, last_name FROM tenants')
+    const {rows} = await client.query('SELECT id, first_name, last_name FROM tenants')
 
-    return response.rows
+    return sqlRowsToObjects(rows)
   })
 
   app.post('/api/tenants/:id', async req => {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    const {rows} = await client.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [
-      id,
-      firstName,
-      lastName,
-    ])
+    await client.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [id, firstName, lastName])
 
-    return rows
+    return {}
   })
 
   app.put('/api/tenants/:id', async req => {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    const {rows} = await client.query(
-      `UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`,
-      [id, firstName, lastName],
-    )
+    await client.query(`UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`, [
+      id,
+      firstName,
+      lastName,
+    ])
 
-    return rows
+    return {}
   })
 
   app.delete('/api/tenants/:id', async req => {
