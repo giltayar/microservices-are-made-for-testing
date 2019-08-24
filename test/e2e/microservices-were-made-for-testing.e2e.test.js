@@ -9,7 +9,7 @@ const {
   generateEnvVarsWithDependenciesVersions,
 } = require('@applitools/docker-compose-testkit')
 
-describe('microservices-were-made-for-testing e2e', function() {
+describe.skip('microservices-were-made-for-testing e2e', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
   const envName = dockerComposeTool(before, after, composePath, {
     shouldPullImages: !!process.env.NODE_ENV && process.env.NODE_ENV !== 'development',
