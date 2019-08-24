@@ -48,4 +48,29 @@ describe('microservices-were-made-for-testing (it)', function() {
       tenant,
     ])
   })
+
+  it('should update a user', async () => {
+    const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
+
+    await fetchAsJsonWithJsonBody(
+      `${baseUrl()}/api/tenants/${tenant.id}`,
+      tenant,
+    )
+
+    const updatedTenant = {...tenant, lastName: 'Gayar'}
+
+    await fetchAsJsonWithJsonBody(
+      `${baseUrl()}/api/tenants/${tenant.id}`,
+      updatedTenant,
+      {method: 'PUT'},
+    )
+
+    expect(await fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([
+      updatedTenant,
+    ])
+  })
+
+  it('should delete a user', async () => {
+    //
+  })
 })
