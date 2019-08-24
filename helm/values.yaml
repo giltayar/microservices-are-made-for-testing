@@ -1,4 +1,0 @@
-replicas: 1
-env:
-  - name: WOOHOO
-    value: "Ouch"
