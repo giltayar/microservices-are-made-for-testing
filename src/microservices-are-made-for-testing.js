@@ -7,22 +7,14 @@ const {sqlRowsToObjects} = require('./field-mappings')
 async function createApp({databaseConnectionString}) {
   const app = fastify()
 
-  const client = await retry(async () => {
-    const client = new Client({
-      connectionString: databaseConnectionString,
-    })
-    await client.connect()
-
-    return client
-  })
-  client.on('error', () => 1)
+  const databaseClient = await retry(connectToDatabase)
 
   app.get('/', async () => {
     return 'OK'
   })
 
   app.get('/api/tenants', async () => {
-    const {rows} = await client.query(
+    const {rows} = await databaseClient.query(
       'SELECT id, first_name, last_name FROM tenants',
     )
 
@@ -33,11 +25,10 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await client.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [
-      id,
-      firstName,
-      lastName,
-    ])
+    await databaseClient.query(
+      `INSERT INTO tenants VALUES ($1, $2, $3)`,
+      [id, firstName, lastName],
+    )
 
     return {}
   })
@@ -46,7 +37,7 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await client.query(
+    await databaseClient.query(
       `UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`,
       [id, firstName, lastName],
     )
@@ -57,12 +48,22 @@ async function createApp({databaseConnectionString}) {
   app.delete('/api/tenants/:id', async req => {
     const {id} = req.params
 
-    await client.query('DELETE FROM tenants WHERE id=$1', [id])
+    await databaseClient.query('DELETE FROM tenants WHERE id=$1', [id])
 
     return {}
   })
 
   return app
+
+  async function connectToDatabase() {
+    const client = new Client({
+      connectionString: databaseConnectionString,
+    })
+    await client.connect()
+    client.on('error', () => 1)
+
+    return client
+  }
 }
 
 const databaseSchema = `
