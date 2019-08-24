@@ -1,5 +1,5 @@
 {
-  "name": "@applitools/microservices-were-made-for-testing",
+  "name": "@giltayar/microservices-were-made-for-testing",
   "version": "1.0.11",
   "description": "",
   "main": "src/microservices-were-made-for-testing.js",
@@ -7,12 +7,11 @@
     "node": ">=10.3.0"
   },
   "files": [
-    "helm",
     "src",
     "scripts"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "bin": {
     "run-microservices-were-made-for-testing": "scripts/run-microservices-were-made-for-testing.js"
@@ -25,23 +24,21 @@
     "eslint": "eslint '**/*.js'",
     "build": "#",
     "postbuild": "npm run build:docker",
-    "build:docker": "docker build -t applitools/microservices-were-made-for-testing .",
+    "build:docker": "docker build -t giltayar/microservices-were-made-for-testing .",
     "postpublish": "npm run publish:docker",
-    "publish:docker": "docker tag applitools/microservices-were-made-for-testing applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:latest"
+    "publish:docker": "docker tag giltayar/microservices-were-made-for-testing giltayar/microservices-were-made-for-testing:${npm_package_version} && docker push giltayar/microservices-were-made-for-testing:${npm_package_version} && docker push giltayar/microservices-were-made-for-testing:latest"
   },
   "keywords": [
-    "applitools",
+    "giltayar",
     "testing",
-    "browser",
-    "grid",
-    "visual-testing",
     "nodejs",
-    "javascript"
+    "javascript",
+    "microservices"
   ],
-  "author": "Gil Tayar <gil.tayar@applitools.com>",
+  "author": "Gil Tayar <gil@tayar.org>",
   "license": "UNLICENSED",
   "repository": {
-    "url": "https://github.com/applitools/rendering-grid",
+    "url": "https://github.com/giltayar/microservices-were-made-for-testing",
     "type": "git"
   },
   "dependencies": {
