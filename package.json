@@ -1,6 +1,6 @@
 {
   "name": "@applitools/microservices-were-made-for-testing",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "src/microservices-were-made-for-testing.js",
   "engines": {
@@ -25,7 +25,7 @@
     "eslint": "eslint '**/*.js'",
     "build": "#",
     "postbuild": "npm run build:docker",
-    "build:docker": "docker build -t applitools/microservices-were-made-for-testing --build-arg NPM_FILE=`cat ~/.npmrc` .",
+    "build:docker": "docker build -t applitools/microservices-were-made-for-testing .",
     "postpublish": "npm run publish:docker",
     "publish:docker": "docker tag applitools/microservices-were-made-for-testing applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:${npm_package_version} && docker push applitools/microservices-were-made-for-testing:latest"
   },
