@@ -5,43 +5,20 @@ const {expect} = require('chai')
 const {v4: uuid} = require('uuid')
 const {fetchAsText, fetchAsJson, fetchAsJsonWithJsonBody} = require('@applitools/http-commons')
 const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
-const {getAddressForService} = require('@applitools/docker-compose-testkit')
-const {connect, close, resetTable, createSchema} = require('../commons/postgres-commons')
-
-const app = require('../..')
+const {prepareDatabase, resetDatabase} = require('../commons/setup')
+const setupApp = require('./setup-app')
 
 describe('microservices-were-made-for-testing (it)', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
-  after(async () => {
-    await appInstance.close()
-    await close({connection})
-  })
   const envName = dockerComposeTool(before, after, composePath)
 
-  let connection
+  before(() => prepareDatabase(envName, composePath))
+  beforeEach(() => resetDatabase(envName, composePath))
+
   let appInstance
-  before(async () => {
-    const postgresAddress = await getAddressForService(envName, composePath, 'postgres', 5432, {
-      customHealthCheck: async address => {
-        const connection = await connect({
-          connectionString: `postgresql://user:password@${address}/postgres`,
-        })
-        await close({connection})
-        return true
-      },
-    })
-    const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
-    connection = await connect({connectionString})
-
-    await createSchema({connection, schema: app.databaseSchema})
-
-    appInstance = await app({databaseConnectionString: connectionString})
-    await appInstance.listen()
-  })
+  before(async () => (appInstance = await setupApp(envName, composePath)))
 
   const baseUrl = () => `http://localhost:${appInstance.server.address().port}`
-
-  beforeEach(async () => resetTable({connection, table: 'tenants'}))
 
   it('should return OK on /', async () => {
     const text = await fetchAsText(`${baseUrl()}/`)
