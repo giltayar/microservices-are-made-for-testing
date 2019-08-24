@@ -1,6 +1,6 @@
 {
   "name": "@applitools/microservices-were-made-for-testing",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "src/microservices-were-made-for-testing.js",
   "engines": {
@@ -50,8 +50,7 @@
     "debug": "^4.1.1",
     "fastify": "^2.7.1",
     "p-retry": "^4.1.0",
-    "pg": "^7.12.1",
-    "snake-case": "^2.1.0"
+    "pg": "^7.12.1"
   },
   "devDependencies": {
     "@applitools/docker-compose-mocha": "^1.4.0",

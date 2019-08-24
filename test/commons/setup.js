@@ -1,20 +1,28 @@
 'use strict'
 const {Client} = require('pg')
-const {getAddressForService} = require('@applitools/docker-compose-testkit')
+const {
+  getAddressForService,
+} = require('@applitools/docker-compose-testkit')
 
 const {databaseSchema} = require('../../')
 
 async function prepareDatabase(envName, composePath) {
-  const postgresAddress = await getAddressForService(envName, composePath, 'postgres', 5432, {
-    customHealthCheck: async address => {
-      const client = new Client({
-        connectionString: `postgresql://user:password@${address}/postgres`,
-      })
-      await client.connect()
-      await client.end()
-      return true
+  const postgresAddress = await getAddressForService(
+    envName,
+    composePath,
+    'postgres',
+    5432,
+    {
+      customHealthCheck: async address => {
+        const client = new Client({
+          connectionString: `postgresql://user:password@${address}/postgres`,
+        })
+        await client.connect()
+        await client.end()
+        return true
+      },
     },
-  })
+  )
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new Client({connectionString})
   await client.connect()
@@ -25,7 +33,12 @@ async function prepareDatabase(envName, composePath) {
 }
 
 async function resetDatabase(envName, composePath) {
-  const postgresAddress = await getAddressForService(envName, composePath, 'postgres', 5432)
+  const postgresAddress = await getAddressForService(
+    envName,
+    composePath,
+    'postgres',
+    5432,
+  )
 
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new Client({connectionString})

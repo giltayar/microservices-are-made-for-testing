@@ -3,11 +3,9 @@ const {describe, it} = require('mocha')
 const {expect} = require('chai')
 
 const {
-  objectToSqlRow,
   sqlRowToObject,
   sqlRowsToObjects,
   fieldToProperty,
-  propertyToField,
 } = require('../../src/field-mappings')
 
 describe('field-mappings (unit)', function() {
@@ -17,14 +15,10 @@ describe('field-mappings (unit)', function() {
     expect(fieldToProperty('id')).to.equal('id')
   })
 
-  it('should map property name to field name', async () => {
-    expect(propertyToField('firstName')).to.equal('first_name')
-    expect(propertyToField('lastName')).to.equal('last_name')
-    expect(propertyToField('id')).to.equal('id')
-  })
-
   it('should map an SQL row to an object', async () => {
-    expect(sqlRowToObject({id: 'a', first_name: 'b', last_name: 'c'})).to.eql({
+    expect(
+      sqlRowToObject({id: 'a', first_name: 'b', last_name: 'c'}),
+    ).to.eql({
       id: 'a',
       firstName: 'b',
       lastName: 'c',
@@ -49,13 +43,5 @@ describe('field-mappings (unit)', function() {
         lastName: 'f',
       },
     ])
-  })
-
-  it('should map an object to an sql row', async () => {
-    expect(objectToSqlRow({id: 'a', firstName: 'b', lastName: 'c'})).to.eql({
-      id: 'a',
-      first_name: 'b',
-      last_name: 'c',
-    })
   })
 })

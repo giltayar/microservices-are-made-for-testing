@@ -8,7 +8,9 @@ async function createApp({databaseConnectionString}) {
   const app = fastify()
 
   const client = await retry(async () => {
-    const client = new Client({connectionString: databaseConnectionString})
+    const client = new Client({
+      connectionString: databaseConnectionString,
+    })
     await client.connect()
     client.on('error', () => 1)
 
@@ -21,7 +23,9 @@ async function createApp({databaseConnectionString}) {
   })
 
   app.get('/api/tenants', async () => {
-    const {rows} = await client.query('SELECT id, first_name, last_name FROM tenants')
+    const {rows} = await client.query(
+      'SELECT id, first_name, last_name FROM tenants',
+    )
 
     return sqlRowsToObjects(rows)
   })
@@ -30,7 +34,11 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await client.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [id, firstName, lastName])
+    await client.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [
+      id,
+      firstName,
+      lastName,
+    ])
 
     return {}
   })
@@ -39,11 +47,10 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await client.query(`UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`, [
-      id,
-      firstName,
-      lastName,
-    ])
+    await client.query(
+      `UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`,
+      [id, firstName, lastName],
+    )
 
     return {}
   })
