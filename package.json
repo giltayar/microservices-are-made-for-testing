@@ -1,8 +1,8 @@
 {
-  "name": "@giltayar/microservices-were-made-for-testing",
+  "name": "@giltayar/microservices-are-made-for-testing",
   "version": "1.0.12",
   "description": "",
-  "main": "src/microservices-were-made-for-testing.js",
+  "main": "src/microservices-are-made-for-testing.js",
   "engines": {
     "node": ">=10.3.0"
   },
@@ -14,19 +14,19 @@
     "access": "public"
   },
   "bin": {
-    "run-microservices-were-made-for-testing": "scripts/run-microservices-were-made-for-testing.js"
+    "run-microservices-are-made-for-testing": "scripts/run-microservices-are-made-for-testing.js"
   },
   "scripts": {
-    "start": "scripts/run-microservices-were-made-for-testing.js",
+    "start": "scripts/run-microservices-are-made-for-testing.js",
     "test": "npm run eslint && npm run test:mocha-parallel",
     "test:mocha": "mocha --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
     "test:mocha-parallel": "mocha-parallel-tests --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
     "eslint": "eslint '**/*.js'",
     "build": "#",
     "postbuild": "npm run build:docker",
-    "build:docker": "docker build -t giltayar/microservices-were-made-for-testing .",
+    "build:docker": "docker build -t giltayar/microservices-are-made-for-testing .",
     "postpublish": "npm run publish:docker",
-    "publish:docker": "docker tag giltayar/microservices-were-made-for-testing giltayar/microservices-were-made-for-testing:${npm_package_version} && docker push giltayar/microservices-were-made-for-testing:${npm_package_version} && docker push giltayar/microservices-were-made-for-testing:latest"
+    "publish:docker": "docker tag giltayar/microservices-are-made-for-testing giltayar/microservices-are-made-for-testing:${npm_package_version} && docker push giltayar/microservices-are-made-for-testing:${npm_package_version} && docker push giltayar/microservices-are-made-for-testing:latest"
   },
   "keywords": [
     "giltayar",
@@ -38,7 +38,7 @@
   "author": "Gil Tayar <gil@tayar.org>",
   "license": "UNLICENSED",
   "repository": {
-    "url": "https://github.com/giltayar/microservices-were-made-for-testing",
+    "url": "https://github.com/giltayar/microservices-are-made-for-testing",
     "type": "git"
   },
   "dependencies": {

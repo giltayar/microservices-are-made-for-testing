@@ -1,8 +1,8 @@
-# microservices-were-made-for-testing
+# microservices-are-made-for-testing
 
-Companion code to the "These microservices were made for testing, and testing is what we'll do" talk.
+Companion code to the "These microservices are made for testing, and testing is what we'll do" talk.
 
-You can find the talk slides [here](http://bit.ly/microservices-were-made-for-testing-jsil)
+You can find the talk slides [here](http://bit.ly/microservices-are-made-for-testing-jsil)
 
 This package is a microservice, complete with testing, that gives CRUD functionality to a "tenants" database.
 
@@ -11,24 +11,24 @@ This package is a microservice, complete with testing, that gives CRUD functiona
 * This package is meant to be used as a docker container, passing the environment variables as defined below.
 
 ```sh
-docker run -d -e "DATABASE_CONNECTION_STRING=..." giltayar/microservices-were-made-for-testing
+docker run -d -e "DATABASE_CONNECTION_STRING=..." giltayar/microservices-are-made-for-testing
 ```
 
 * see `test/e2e/docker-compose.yml` for an example run used in the end to end tests.
 
-* Alternatively, it can be run using `./scripts/run-microservices-were-made-for-testing.js`,
+* Alternatively, it can be run using `./scripts/run-microservices-are-made-for-testing.js`,
   using the environment variables as defined below.
 
 ```sh
-npm install @giltayar/microservices-were-made-for-testing
+npm install @giltayar/microservices-are-made-for-testing
 export DATABASE_CONNECTION_STRING=...
-npx run-microservices-were-made-for-testing
+npx run-microservices-are-made-for-testing
 ```
 
 * Alternatively, you can import it and create the app (see below), passing it the configuration as defined below.
 
 ```sh
-npm install @giltayar/microservices-were-made-for-testing
+npm install @giltayar/microservices-are-made-for-testing
 ```
 
 ## Services it depends on
@@ -38,7 +38,7 @@ npm install @giltayar/microservices-were-made-for-testing
 ## Using the package to run the application
 
 ```js
-const createApp = require('@giltayar/microservices-were-made-for-testing')
+const createApp = require('@giltayar/microservices-are-made-for-testing')
 
 // configuration options aee the same as the above corresponding environment variables
 const app = createApp({databaseConnectionString: '...'})

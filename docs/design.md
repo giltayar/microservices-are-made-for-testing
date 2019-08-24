@@ -1,1 +1,1 @@
-# Design of microservices-were-made-for-testing
+# Design of microservices-are-made-for-testing

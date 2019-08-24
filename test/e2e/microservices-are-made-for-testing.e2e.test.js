@@ -13,14 +13,14 @@ const {
 } = require('@applitools/docker-compose-testkit')
 const {prepareDatabase, resetDatabase} = require('../commons/setup')
 
-describe('microservices-were-made-for-testing (e2e)', function() {
+describe('microservices-are-made-for-testing (e2e)', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
   const envName = dockerComposeTool(before, after, composePath)
 
   before(() => prepareDatabase(envName, composePath))
   beforeEach(() => resetDatabase(envName, composePath))
 
-  it('should return users after they were added', async () => {
+  it('should return users after they are added', async () => {
     const appAddress = await getAddressForService(
       envName,
       composePath,
