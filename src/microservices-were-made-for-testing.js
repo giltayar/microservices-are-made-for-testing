@@ -12,11 +12,10 @@ async function createApp({databaseConnectionString}) {
       connectionString: databaseConnectionString,
     })
     await client.connect()
-    client.on('error', () => 1)
 
     return client
   })
-  app.addHook('onClose', async () => await client.end().catch(() => 1))
+  client.on('error', () => 1)
 
   app.get('/', async () => {
     return 'OK'
