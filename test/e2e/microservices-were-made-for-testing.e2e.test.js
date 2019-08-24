@@ -1,29 +1,44 @@
 'use strict'
 const path = require('path')
-const {describe, it, before, after} = require('mocha')
+const {describe, it, before, after, beforeEach} = require('mocha')
 const {expect} = require('chai')
-const {fetchAsText} = require('@applitools/http-commons')
+const {v4: uuid} = require('uuid')
+const {fetchAsJsonWithJsonBody, fetchAsJson} = require('@applitools/http-commons')
 const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
-const {
-  getAddressForService,
-  generateEnvVarsWithDependenciesVersions,
-} = require('@applitools/docker-compose-testkit')
+const {getAddressForService} = require('@applitools/docker-compose-testkit')
+const {connect, close, resetTable, createSchema} = require('../commons/postgres-commons')
 
-describe.skip('microservices-were-made-for-testing e2e', function() {
+describe('microservices-were-made-for-testing (e2e)', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
-  const envName = dockerComposeTool(before, after, composePath, {
-    shouldPullImages: !!process.env.NODE_ENV && process.env.NODE_ENV !== 'development',
-    brutallyKill: true,
-    envVars: {
-      ...generateEnvVarsWithDependenciesVersions(require('../../package.json')),
-    },
-  })
+  const envName = dockerComposeTool(before, after, composePath, {containerCleanUp: false})
 
-  it('should return OK on /', async () => {
+  const {databaseSchema} = require('../..')
+
+  let connection
+  before(async () => {
+    const postgresAddress = await getAddressForService(envName, composePath, 'postgres', 5432, {
+      customHealthCheck: async address => {
+        const connection = await connect({
+          connectionString: `postgresql://user:password@${address}/postgres`,
+        })
+        await close({connection})
+        return true
+      },
+    })
+    const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
+    connection = await connect({connectionString})
+
+    await createSchema({connection, schema: databaseSchema})
+  })
+  beforeEach(async () => resetTable({connection, table: 'tenants'}))
+
+  it('should return users after they were added', async () => {
     const appAddress = await getAddressForService(envName, composePath, 'app', 80)
 
-    const response = await fetchAsText(`http://${appAddress}/`)
+    const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
 
-    expect(response).to.equal('OK')
+    await fetchAsJsonWithJsonBody(`http://${appAddress}/api/tenants/${tenant.id}`, tenant)
+
+    expect(await fetchAsJson(`http://${appAddress}/api/tenants`)).to.eql([tenant])
   })
 })

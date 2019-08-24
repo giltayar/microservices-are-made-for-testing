@@ -1,13 +1,17 @@
 'use strict'
 const fastify = require('fastify')
 const {Client} = require('pg')
+const retry = require('p-retry')
 const {sqlRowsToObjects} = require('./field-mappings')
 
 async function createApp({databaseConnectionString}) {
   const app = fastify()
 
-  const client = new Client({connectionString: databaseConnectionString})
-  await client.connect()
+  const client = await retry(async () => {
+    const client = new Client({connectionString: databaseConnectionString})
+    await client.connect()
+    return client
+  })
   app.addHook('onClose', async () => await client.end())
 
   app.get('/', async () => {

@@ -4,5 +4,14 @@ services:
     image: applitools/microservices-were-made-for-testing
     ports:
       - 80
-    # environment:
-    #   - FOO: "bar"
+    environment:
+      DATABASE_CONNECTION_STRING: "postgresql://user:password@postgres:5432/postgres"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432
