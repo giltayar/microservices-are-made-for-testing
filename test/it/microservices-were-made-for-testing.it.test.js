@@ -16,14 +16,7 @@ describe('microservices-were-made-for-testing (it)', function() {
     await appInstance.close()
     await close({connection})
   })
-  const envName = dockerComposeTool(before, after, composePath, {
-    brutallyKill: true,
-    shouldPullImages: false,
-    envVars: {
-      POSTGRES_USER: 'user',
-      POSTGRES_PASSWORD: 'password',
-    },
-  })
+  const envName = dockerComposeTool(before, after, composePath)
 
   let connection
   let appInstance
