@@ -2,7 +2,7 @@
 
 Companion code to the "These microservices were made for testing, and testing is what we'll do" talk.
 
-You can find the talk slides at http://bit.ly/microservices-were-made-for-testing-jsil
+You can find the talk slides [here](http://bit.ly/microservices-were-made-for-testing-jsil)
 
 This package is a microservice, complete with testing, that gives CRUD functionality to a "tenants" database.
 

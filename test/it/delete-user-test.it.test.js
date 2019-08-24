@@ -11,7 +11,7 @@ const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
 const {prepareDatabase, resetDatabase} = require('../commons/setup')
 const setupApp = require('./setup-app')
 
-describe('microservices-were-made-for-testing (it)', function() {
+describe('delete-user (it)', function() {
   const composePath = path.join(__dirname, 'docker-compose.yml')
   const envName = dockerComposeTool(before, after, composePath)
 
