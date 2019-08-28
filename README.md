@@ -33,6 +33,7 @@ npm install @giltayar/microservices-are-made-for-testing
 
 ## Services it depends on
 
+* Docker: you need it to run the tests, but not necessarily in production
 * Postgres: you don't need to install Postgres to run the tests, but you will need it in a production environment.
 
 ## Using the package to run the application
