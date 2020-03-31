@@ -22,5 +22,6 @@ describe('microservices-are-made-for-testing (e2e)', function () {
   beforeEach(() => resetDatabase(envName, composePath))
 
   it('should return users after they are added', async () => {
-    expect(true).to.be.true  })
+    expect(true).to.be.true
+  })
 })
