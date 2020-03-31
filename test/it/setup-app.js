@@ -11,7 +11,7 @@ async function setupApp(envName, composePath) {
     databaseConnectionString: connectionString,
   })
 
-  await appInstance.listen()
+  await appInstance.listen(0)
 
   return appInstance
 }
