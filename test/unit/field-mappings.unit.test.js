@@ -2,11 +2,7 @@
 const {describe, it} = require('mocha')
 const {expect} = require('chai')
 
-const {
-  sqlRowToObject,
-  sqlRowsToObjects,
-  fieldToProperty,
-} = require('../../src/field-mappings')
+const {sqlRowToObject, sqlRowsToObjects, fieldToProperty} = require('../../src/field-mappings')
 
 describe('field-mappings (unit)', function () {
   it('should map field name to property name', async () => {
@@ -16,9 +12,7 @@ describe('field-mappings (unit)', function () {
   })
 
   it('should map an SQL row to an object', async () => {
-    expect(
-      sqlRowToObject({id: 'a', first_name: 'b', last_name: 'c'}),
-    ).to.eql({
+    expect(sqlRowToObject({id: 'a', first_name: 'b', last_name: 'c'})).to.eql({
       id: 'a',
       firstName: 'b',
       lastName: 'c',

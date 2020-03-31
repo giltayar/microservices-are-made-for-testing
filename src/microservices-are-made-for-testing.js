@@ -14,9 +14,7 @@ async function createApp({databaseConnectionString}) {
   })
 
   app.get('/api/tenants', async () => {
-    const {rows} = await databaseClient.query(
-      'SELECT id, first_name, last_name FROM tenants',
-    )
+    const {rows} = await databaseClient.query('SELECT id, first_name, last_name FROM tenants')
 
     return sqlRowsToObjects(rows)
   })
@@ -25,10 +23,7 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await databaseClient.query(
-      `INSERT INTO tenants VALUES ($1, $2, $3)`,
-      [id, firstName, lastName],
-    )
+    await databaseClient.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [id, firstName, lastName])
 
     return {}
   })
@@ -37,10 +32,11 @@ async function createApp({databaseConnectionString}) {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
-    await databaseClient.query(
-      `UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`,
-      [id, firstName, lastName],
-    )
+    await databaseClient.query(`UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`, [
+      id,
+      firstName,
+      lastName,
+    ])
 
     return {}
   })

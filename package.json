@@ -1,6 +1,6 @@
 {
   "name": "@giltayar/microservices-are-made-for-testing",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "",
   "main": "src/microservices-are-made-for-testing.js",
   "engines": {

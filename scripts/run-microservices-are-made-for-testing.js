@@ -9,9 +9,7 @@ async function main() {
   })
   await app.listen(parseInt(process.env.PORT, 10) || 3000, '0.0.0.0')
   console.log(
-    `Listening on port ${
-      /**@type import('net').AddressInfo */ (app.server.address()).port
-    }`,
+    `Listening on port ${/**@type import('net').AddressInfo */ (app.server.address()).port}`,
   )
 }
 
