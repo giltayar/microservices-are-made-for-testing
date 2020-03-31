@@ -9,7 +9,7 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres
+    image: postgres:12.1
     environment:
       POSTGRES_USER: "user"
       POSTGRES_PASSWORD: "password"

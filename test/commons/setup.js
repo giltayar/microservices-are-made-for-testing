@@ -13,7 +13,7 @@ async function prepareDatabase(envName, composePath) {
     'postgres',
     5432,
     {
-      customHealthCheck: async address => {
+      customHealthCheck: async (address) => {
         const client = new Client({
           connectionString: `postgresql://user:password@${address}/postgres`,
         })

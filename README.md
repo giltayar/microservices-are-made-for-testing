@@ -8,18 +8,24 @@ This package is a microservice, complete with testing, that gives CRUD functiona
 
 ## Installing
 
-* This package is meant to be used as a docker container, passing the environment variables as defined below.
+* The microservice is meant to be used as a docker container, passing the environment variables as defined below.
 
 ```sh
-docker run -d -e "DATABASE_CONNECTION_STRING=..." giltayar/microservices-are-made-for-testing
+# run postgres
+docker run -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
+# run the microservice
+docker run -d -e "DATABASE_CONNECTION_STRING=postgresql://user:password@postgres:5432/postgres" giltayar/microservices-are-made-for-testing
 ```
 
 * see `test/e2e/docker-compose.yml` for an example run used in the end to end tests.
 
-* Alternatively, it can be run using `./scripts/run-microservices-are-made-for-testing.js`,
+* Alternatively, it can be run outside of the docker container,
+  using `./scripts/run-microservices-are-made-for-testing.js`,
   using the environment variables as defined below.
 
 ```sh
+# run postgres
+docker run -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
 npm install @giltayar/microservices-are-made-for-testing
 export DATABASE_CONNECTION_STRING=...
 npx run-microservices-are-made-for-testing
@@ -34,7 +40,9 @@ npm install @giltayar/microservices-are-made-for-testing
 ## Services it depends on
 
 * Docker: you need it to run the tests, but not necessarily in production
-* Postgres: you don't need to install Postgres to run the tests, but you will need it in a production environment.
+* Postgres: you don't need to install Postgres to run the tests
+(because the tests run the Postgres docker container by themselves),
+but you will need it in a production environment.
 
 ## Using the package to run the application
 

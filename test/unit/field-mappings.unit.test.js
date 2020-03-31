@@ -8,7 +8,7 @@ const {
   fieldToProperty,
 } = require('../../src/field-mappings')
 
-describe('field-mappings (unit)', function() {
+describe('field-mappings (unit)', function () {
   it('should map field name to property name', async () => {
     expect(fieldToProperty('first_name')).to.equal('firstName')
     expect(fieldToProperty('last_name')).to.equal('lastName')

@@ -11,7 +11,7 @@ async function main() {
   console.log(`Listening on port ${app.server.address().port}`)
 }
 
-main().catch(async err => {
+main().catch(async (err) => {
   try {
     console.error('Webserver crashed', err.stack || err)
   } finally {

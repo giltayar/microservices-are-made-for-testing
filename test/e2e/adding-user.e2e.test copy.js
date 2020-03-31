@@ -13,7 +13,7 @@ const {
 } = require('@applitools/docker-compose-testkit')
 const {prepareDatabase, resetDatabase} = require('../commons/setup')
 
-describe('microservices-are-made-for-testing (e2e)', function() {
+describe('microservices-are-made-for-testing (e2e)', function () {
   const composePath = path.join(__dirname, 'docker-compose.yml')
   const envName = dockerComposeTool(before, after, composePath)
 

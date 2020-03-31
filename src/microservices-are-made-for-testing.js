@@ -21,7 +21,7 @@ async function createApp({databaseConnectionString}) {
     return sqlRowsToObjects(rows)
   })
 
-  app.post('/api/tenants/:id', async req => {
+  app.post('/api/tenants/:id', async (req) => {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
@@ -33,7 +33,7 @@ async function createApp({databaseConnectionString}) {
     return {}
   })
 
-  app.put('/api/tenants/:id', async req => {
+  app.put('/api/tenants/:id', async (req) => {
     const {id} = req.params
     const {firstName, lastName} = req.body
 
@@ -45,7 +45,7 @@ async function createApp({databaseConnectionString}) {
     return {}
   })
 
-  app.delete('/api/tenants/:id', async req => {
+  app.delete('/api/tenants/:id', async (req) => {
     const {id} = req.params
 
     await databaseClient.query('DELETE FROM tenants WHERE id=$1', [id])
