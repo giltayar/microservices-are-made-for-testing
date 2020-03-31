@@ -6,9 +6,19 @@ You can find the talk slides [here](http://bit.ly/microservices-are-made-for-tes
 
 This package is a microservice, complete with testing, that gives CRUD functionality to a "tenants" database.
 
-## Installing
+> Note! This package uses Node's ESM support, so Node v13 is the minimum version
 
-* The microservice is meant to be used as a docker container, passing the environment variables as defined below.
+## Installing and running
+
+* To install and build it, run:
+
+```sh
+npm ci
+npm run build # Builds the docker image
+npm test # Tests the microservice
+```
+
+* To run it as a microservice in a docker container
 
 ```sh
 # run postgres
@@ -17,24 +27,15 @@ docker run --name postgres -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=passwor
 docker run -d -e "DATABASE_CONNECTION_STRING=postgresql://user:password@postgres:5432/postgres" giltayar/microservices-are-made-for-testing
 ```
 
-* see `test/e2e/docker-compose.yml` for an example run used in the end to end tests.
-
 * Alternatively, it can be run outside of the docker container,
-  using `./scripts/run-microservices-are-made-for-testing.js`,
-  using the environment variables as defined below.
+  using `./scripts/run-microservices-are-made-for-testing.js` (or `npm start`),
+  and the environment variables as defined below.
 
 ```sh
 # run postgres
 docker run -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
-npm install @giltayar/microservices-are-made-for-testing
 export DATABASE_CONNECTION_STRING=postgresql://user:password@localhost:5432/postgres
-npx run-microservices-are-made-for-testing
-```
-
-* Alternatively, you can import it and create the app (see below), passing it the configuration as defined below.
-
-```sh
-npm install @giltayar/microservices-are-made-for-testing
+npm start
 ```
 
 ## Services it depends on
@@ -45,6 +46,7 @@ npm install @giltayar/microservices-are-made-for-testing
 but you will need it in a production environment.
 
 ## Using the package to run the application
+
 
 ```js
 const createApp = require('@giltayar/microservices-are-made-for-testing')

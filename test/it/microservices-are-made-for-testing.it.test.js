@@ -46,7 +46,7 @@ describe('microservices-are-made-for-testing (it)', function () {
     await httpCommons.fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant.id}`, tenant)
 
     // Check tenant was added
-    const tenantList = await await httpCommons.fetchAsJson(`${baseUrl()}/api/tenants`)
+    const tenantList = await httpCommons.fetchAsJson(`${baseUrl()}/api/tenants`)
     expect(tenantList).to.eql([tenant])
   })
 
@@ -59,7 +59,7 @@ describe('microservices-are-made-for-testing (it)', function () {
     // Update its last name
     const updatedTenant = {...tenant, lastName: 'Gayar'}
     await httpCommons.fetchAsJsonWithJsonBody(
-      `${baseUrl()}/api/tenants/${tenant.id}`,
+      `${baseUrl()}/api/tenants/${updatedTenant.id}`,
       updatedTenant,
       {
         method: 'PUT',

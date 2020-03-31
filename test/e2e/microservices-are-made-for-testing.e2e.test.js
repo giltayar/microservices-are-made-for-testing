@@ -2,9 +2,8 @@ import {createRequire} from 'module'
 import {join, dirname} from 'path'
 import {fileURLToPath} from 'url'
 import {prepareDatabase, resetDatabase} from '../commons/setup.js'
-// import {setupApp} from './setup-app.mjs'
-// import httpCommons from '@applitools/http-commons'
 import dockerCompose from '@applitools/docker-compose-mocha'
+//import dct from '@applitools/docker-compose-testkit'
 
 // @ts-ignore
 const __dirname = dirname(fileURLToPath(import.meta.url))
