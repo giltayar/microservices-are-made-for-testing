@@ -1,5 +1,6 @@
 import {createRequire} from 'module'
 
+//@ts-ignore
 const require = createRequire(import.meta.url)
 const {describe, it} = require('mocha')
 const {expect} = require('chai')

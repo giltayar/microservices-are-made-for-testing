@@ -6,12 +6,13 @@ import {prepareDatabase, resetDatabase} from '../commons/setup.js'
 // import httpCommons from '@applitools/http-commons'
 import dockerCompose from '@applitools/docker-compose-mocha'
 
+// @ts-ignore
+const __dirname = dirname(fileURLToPath(import.meta.url))
+// @ts-ignore
 const require = createRequire(import.meta.url)
 const {describe, it, before, after, beforeEach} = require('mocha')
 const {expect} = require('chai')
 // const {v4: uuid} = require('uuid')
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('microservices-are-made-for-testing (e2e)', function () {
   const composePath = join(__dirname, 'docker-compose.yml')
@@ -21,6 +22,5 @@ describe('microservices-are-made-for-testing (e2e)', function () {
   beforeEach(() => resetDatabase(envName, composePath))
 
   it('should return users after they are added', async () => {
-    expect(true).to.be.true
-  })
+    expect(true).to.be.true  })
 })
