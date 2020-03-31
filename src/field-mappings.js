@@ -1,5 +1,5 @@
 'use strict'
-const camelCase = require('camel-case')
+const {camelCase} = require('camel-case')
 const {mapKeys} = require('@applitools/functional-commons')
 
 function fieldToProperty(field) {
