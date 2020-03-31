@@ -1,16 +1,21 @@
-'use strict'
-const path = require('path')
+import {createRequire} from 'module'
+import {join, dirname} from 'path'
+import {fileURLToPath} from 'url'
+import {prepareDatabase, resetDatabase} from '../commons/setup.js'
+import {setupApp} from './setup-app.js'
+import httpCommons from '@applitools/http-commons'
+import dockerCompose from '@applitools/docker-compose-mocha'
+
+const require = createRequire(import.meta.url)
 const {describe, it, before, after, beforeEach} = require('mocha')
 const {expect} = require('chai')
 const {v4: uuid} = require('uuid')
-const {fetchAsJson, fetchAsJsonWithJsonBody} = require('@applitools/http-commons')
-const {dockerComposeTool} = require('@applitools/docker-compose-mocha')
-const {prepareDatabase, resetDatabase} = require('../commons/setup')
-const setupApp = require('./setup-app')
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('delete-user (it)', function () {
-  const composePath = path.join(__dirname, 'docker-compose.yml')
-  const envName = dockerComposeTool(before, after, composePath)
+  const composePath = join(__dirname, 'docker-compose.yml')
+  const envName = dockerCompose.dockerComposeTool(before, after, composePath)
 
   before(() => prepareDatabase(envName, composePath))
   beforeEach(() => resetDatabase(envName, composePath))
@@ -25,14 +30,14 @@ describe('delete-user (it)', function () {
     const tenant2 = {id: uuid(), firstName: 'Shai', lastName: 'Reznik'}
 
     await Promise.all([
-      fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant1.id}`, tenant1),
-      fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant2.id}`, tenant2),
+      httpCommons.fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant1.id}`, tenant1),
+      httpCommons.fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant2.id}`, tenant2),
     ])
 
-    await fetchAsJson(`${baseUrl()}/api/tenants/${tenant1.id}`, {
+    await httpCommons.fetchAsJson(`${baseUrl()}/api/tenants/${tenant1.id}`, {
       method: 'DELETE',
     })
 
-    expect(await fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([tenant2])
+    expect(await httpCommons.fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([tenant2])
   })
 })

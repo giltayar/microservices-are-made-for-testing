@@ -12,7 +12,7 @@ This package is a microservice, complete with testing, that gives CRUD functiona
 
 ```sh
 # run postgres
-docker run -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
+docker run --name postgres -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
 # run the microservice
 docker run -d -e "DATABASE_CONNECTION_STRING=postgresql://user:password@postgres:5432/postgres" giltayar/microservices-are-made-for-testing
 ```
@@ -27,7 +27,7 @@ docker run -d -e "DATABASE_CONNECTION_STRING=postgresql://user:password@postgres
 # run postgres
 docker run -d -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:12.1
 npm install @giltayar/microservices-are-made-for-testing
-export DATABASE_CONNECTION_STRING=...
+export DATABASE_CONNECTION_STRING=postgresql://user:password@localhost:5432/postgres
 npx run-microservices-are-made-for-testing
 ```
 

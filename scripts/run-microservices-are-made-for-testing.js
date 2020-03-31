@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-'use strict'
-
-const webApp = require('../')
+import webApp from '../src/microservices-are-made-for-testing.js'
 
 async function main() {
+  console.log(`*********** `, {x: process.env.DATABASE_CONNECTION_STRING}) //@@@GIL
   const app = await webApp({
     databaseConnectionString: process.env.DATABASE_CONNECTION_STRING,
   })

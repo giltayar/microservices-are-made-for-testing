@@ -1,11 +1,12 @@
 {
   "name": "@giltayar/microservices-are-made-for-testing",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "",
   "main": "src/microservices-are-made-for-testing.js",
   "engines": {
-    "node": ">=10.3.0"
+    "node": ">=13.3.0"
   },
+  "type": "module",
   "files": [
     "src",
     "scripts"
@@ -18,9 +19,8 @@
   },
   "scripts": {
     "start": "scripts/run-microservices-are-made-for-testing.js",
-    "test": "npm run eslint && npm run test:mocha-parallel",
+    "test": "npm run eslint && npm run test:mocha",
     "test:mocha": "mocha --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
-    "test:mocha-parallel": "mocha-parallel-tests --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
     "eslint": "eslint '**/*.js'",
     "build": "#",
     "postbuild": "npm run build:docker",
@@ -53,6 +53,7 @@
     "@applitools/docker-compose-mocha": "^1.4.3",
     "@applitools/docker-compose-testkit": "^1.1.2",
     "@applitools/http-commons": "^2.4.3",
+    "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-mocha-no-only": "^1.1.0",

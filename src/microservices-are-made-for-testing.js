@@ -1,13 +1,12 @@
-'use strict'
-const fastify = require('fastify')
-const {Client} = require('pg')
-const retry = require('p-retry')
-const {sqlRowsToObjects} = require('./field-mappings')
+import fastify from 'fastify'
+import retry from 'p-retry'
+import {sqlRowsToObjects} from './field-mappings.js'
+import pg from 'pg'
 
-async function createApp({databaseConnectionString}) {
+export default async function createApp({databaseConnectionString}) {
   const app = fastify()
 
-  const databaseClient = await retry(connectToDatabase)
+  const databaseClient = await retry(connectToDatabase, {onFailedAttempt: console.error})
 
   app.get('/', async () => {
     return 'OK'
@@ -52,7 +51,7 @@ async function createApp({databaseConnectionString}) {
   return app
 
   async function connectToDatabase() {
-    const client = new Client({
+    const client = new pg.Client({
       connectionString: databaseConnectionString,
     })
     await client.connect()
@@ -62,13 +61,10 @@ async function createApp({databaseConnectionString}) {
   }
 }
 
-const databaseSchema = `
+export const databaseSchema = `
   CREATE TABLE tenants (
     id UUID PRIMARY KEY,
     first_name VARCHAR,
     last_name VARCHAR
   )
 `
-
-module.exports = createApp
-module.exports.databaseSchema = databaseSchema

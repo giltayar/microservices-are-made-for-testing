@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:13
 
 ENV NODE_ENV=production
 
@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 80
 ENV PORT=80
 
-CMD ["node", "--max-old-space-size=200", "scripts/run-microservices-are-made-for-testing.js"]
+CMD ["node", "scripts/run-microservices-are-made-for-testing.js"]

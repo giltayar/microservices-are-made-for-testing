@@ -8,7 +8,8 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "extends": ["plugin:node/recommended"],
+  "parser": "babel-eslint",
+  "extends": ["plugin:node/recommended-module"],
   "plugins": ["prettier", "mocha-no-only", "node"],
   "rules": {
     "prettier/prettier": ["error"],

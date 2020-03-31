@@ -1,10 +1,14 @@
-'use strict'
-const {getAddressForService} = require('@applitools/docker-compose-testkit')
+import dockerComponse from '@applitools/docker-compose-testkit'
 
-const app = require('../..')
+import app from '../../src/microservices-are-made-for-testing.js'
 
-async function setupApp(envName, composePath) {
-  const postgresAddress = await getAddressForService(envName, composePath, 'postgres', 5432)
+export async function setupApp(envName, composePath) {
+  const postgresAddress = await dockerComponse.getAddressForService(
+    envName,
+    composePath,
+    'postgres',
+    5432,
+  )
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
 
   const appInstance = await app({
@@ -15,5 +19,3 @@ async function setupApp(envName, composePath) {
 
   return appInstance
 }
-
-module.exports = setupApp

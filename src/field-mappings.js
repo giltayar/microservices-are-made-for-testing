@@ -1,21 +1,14 @@
-'use strict'
-const {camelCase} = require('camel-case')
-const {mapKeys} = require('@applitools/functional-commons')
+import fc from '@applitools/functional-commons'
+import cc from 'camel-case'
 
-function fieldToProperty(field) {
-  return camelCase(field)
+export function fieldToProperty(field) {
+  return cc.camelCase(field)
 }
 
-function sqlRowToObject(row) {
-  return mapKeys(row, fieldToProperty)
+export function sqlRowToObject(row) {
+  return fc.mapKeys(row, fieldToProperty)
 }
 
-function sqlRowsToObjects(rows) {
+export function sqlRowsToObjects(rows) {
   return rows.map(sqlRowToObject)
-}
-
-module.exports = {
-  fieldToProperty,
-  sqlRowToObject,
-  sqlRowsToObjects,
 }

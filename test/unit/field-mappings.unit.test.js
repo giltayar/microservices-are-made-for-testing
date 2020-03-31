@@ -1,8 +1,10 @@
-'use strict'
+import {createRequire} from 'module'
+
+const require = createRequire(import.meta.url)
 const {describe, it} = require('mocha')
 const {expect} = require('chai')
 
-const {sqlRowToObject, sqlRowsToObjects, fieldToProperty} = require('../../src/field-mappings')
+import {sqlRowToObject, sqlRowsToObjects, fieldToProperty} from '../../src/field-mappings.js'
 
 describe('field-mappings (unit)', function () {
   it('should map field name to property name', async () => {
