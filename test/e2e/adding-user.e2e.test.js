@@ -6,9 +6,7 @@ import httpCommons from '@applitools/http-commons'
 import dockerCompose from '@applitools/docker-compose-mocha'
 import dct from '@applitools/docker-compose-testkit'
 
-//@ts-ignore
 const require = createRequire(import.meta.url)
-//@ts-ignore
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const {describe, it, before, after, beforeEach} = require('mocha')
 const {expect} = require('chai')
