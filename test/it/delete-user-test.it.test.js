@@ -24,7 +24,7 @@ describe('delete-user (it)', function () {
 
   const baseUrl = () => `http://localhost:${appInstance.server.address().port}`
 
-  it('should delete a user', async () => {
+  it.skip('should delete a user', async () => {
     const tenant1 = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
     const tenant2 = {id: uuid(), firstName: 'Shai', lastName: 'Reznik'}
 

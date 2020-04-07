@@ -19,7 +19,7 @@ describe('microservices-are-made-for-testing (e2e)', function () {
   before(() => prepareDatabase(envName, composePath))
   beforeEach(() => resetDatabase(envName, composePath))
 
-  it('should return users after they are added', async () => {
+  it.skip('should return users after they are added', async () => {
     const appAddress = await dct.getAddressForService(envName, composePath, 'app', 80)
 
     const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}

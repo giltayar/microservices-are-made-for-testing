@@ -1,6 +1,6 @@
 import dockerComponse from '@applitools/docker-compose-testkit'
 
-import app from '../../src/microservices-are-made-for-testing.js'
+import createApp from '../../src/microservices-are-made-for-testing.js'
 
 export async function setupApp(envName, composePath) {
   const postgresAddress = await dockerComponse.getAddressForService(
@@ -11,7 +11,7 @@ export async function setupApp(envName, composePath) {
   )
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
 
-  const appInstance = await app({
+  const appInstance = await createApp({
     databaseConnectionString: connectionString,
   })
 
