@@ -5,10 +5,12 @@ async function main() {
   const app = await createApp({
     databaseConnectionString: process.env.DATABASE_CONNECTION_STRING,
   })
-  await app.listen(parseInt(process.env.PORT, 10) || 3000, '0.0.0.0')
-  console.log(
-    `Listening on port ${/**@type import('net').AddressInfo */ (app.server.address()).port}`,
-  )
+
+  const port = parseInt(process.env.PORT, 10) || 3000
+
+  await app.listen(port, '0.0.0.0')
+
+  console.log(`Listening on port ${port}`)
 }
 
 main().catch(async (err) => {
