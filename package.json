@@ -23,6 +23,7 @@
     "test:eslint": "eslint '**/*.js'",
     "test:ts": "tsc --noEmit",
     "test:mocha": "mocha --no-timeouts --exit 'test/unit/*.test.js' 'test/it/*.test.js' 'test/e2e/*.test.js'",
+    "build": ":",
     "postbuild": "npm run build:docker",
     "build:docker": "docker build -t giltayar/microservices-are-made-for-testing .",
     "postpublish": "npm run publish:docker",

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import webApp from '../src/microservices-are-made-for-testing.js'
+import createApp from '../src/microservices-are-made-for-testing.js'
 
 async function main() {
-  const app = await webApp({
+  const app = await createApp({
     databaseConnectionString: process.env.DATABASE_CONNECTION_STRING,
   })
   await app.listen(parseInt(process.env.PORT, 10) || 3000, '0.0.0.0')
