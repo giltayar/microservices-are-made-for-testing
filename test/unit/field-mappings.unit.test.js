@@ -1,8 +1,8 @@
-import {createRequire} from 'module'
+import mocha from 'mocha'
+import chai from 'chai'
 
-const require = createRequire(import.meta.url)
-const {describe, it} = require('mocha')
-const {expect} = require('chai')
+const {describe, it} = mocha
+const {expect} = chai
 
 import {sqlRowToObject, sqlRowsToObjects, fieldToProperty} from '../../src/field-mappings.js'
 

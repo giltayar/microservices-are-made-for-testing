@@ -1,16 +1,15 @@
-import {createRequire} from 'module'
 import {join, dirname} from 'path'
-import {fileURLToPath} from 'url'
+import mocha from 'mocha'
+import chai from 'chai'
+import {v4 as uuid} from 'uuid'
 import {prepareDatabase, resetDatabase} from '../commons/setup.js'
 import {setupApp} from './setup-app.js'
 import httpCommons from '@applitools/http-commons'
 import dockerCompose from '@applitools/docker-compose-mocha'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const require = createRequire(import.meta.url)
-const {describe, it, before, after, beforeEach} = require('mocha')
-const {expect} = require('chai')
-const {v4: uuid} = require('uuid')
+const __dirname = dirname(new URL(import.meta.url).pathname)
+const {describe, it, before, after, beforeEach} = mocha
+const {expect} = chai
 
 describe('delete-user (it)', function () {
   const composePath = join(__dirname, 'docker-compose.yml')
