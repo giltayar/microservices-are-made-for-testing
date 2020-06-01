@@ -2,10 +2,10 @@ import {join, dirname} from 'path'
 import mocha from 'mocha'
 import chai from 'chai'
 import {v4 as uuid} from 'uuid'
-import {prepareDatabase, resetDatabase} from '../commons/setup.js'
 import httpCommons from '@applitools/http-commons'
 import dockerCompose from '@applitools/docker-compose-mocha'
 import dct from '@applitools/docker-compose-testkit'
+import {prepareDatabase, resetDatabase} from '../commons/setup.js'
 
 const __dirname = dirname(new URL(import.meta.url).pathname)
 const {describe, it, before, after, beforeEach} = mocha

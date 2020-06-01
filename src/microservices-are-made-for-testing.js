@@ -1,7 +1,7 @@
 import fastify from 'fastify'
 import retry from 'p-retry'
-import {sqlRowsToObjects} from './field-mappings.js'
 import pg from 'pg'
+import {sqlRowsToObjects} from './field-mappings.js'
 
 export default async function createApp({databaseConnectionString}) {
   const app = fastify()
