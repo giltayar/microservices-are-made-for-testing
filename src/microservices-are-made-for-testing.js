@@ -5,6 +5,7 @@ import {sqlRowsToObjects} from './field-mappings.js'
 
 export default async function createApp({databaseConnectionString}) {
   const app = fastify()
+  let _
 
   const databaseClient = await retry(connectToDatabase, {onFailedAttempt: console.error})
 
@@ -18,35 +19,48 @@ export default async function createApp({databaseConnectionString}) {
     return sqlRowsToObjects(rows)
   })
 
-  app.post('/api/tenants/:id', async (req) => {
-    const {id} = req.params
-    const {firstName, lastName} = req.body
+  _ =
+    /**@type {typeof app.post<{Params: {id: string}, Body: {firstName: String, lastName: string}}>}*/ (
+      app.post
+    )('/api/tenants/:id', async (req) => {
+      const {id} = req.params
+      const {firstName, lastName} = req.body
 
-    await databaseClient.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [id, firstName, lastName])
+      await databaseClient.query(`INSERT INTO tenants VALUES ($1, $2, $3)`, [
+        id,
+        firstName,
+        lastName,
+      ])
 
-    return {}
-  })
+      return {}
+    })
 
-  app.put('/api/tenants/:id', async (req) => {
-    const {id} = req.params
-    const {firstName, lastName} = req.body
+  _ =
+    /**@type {typeof app.post<{Params: {id: string}, Body: {firstName: String, lastName: string}}>}*/ (
+      app.put
+    )('/api/tenants/:id', async (req) => {
+      const {id} = req.params
+      const {firstName, lastName} = req.body
 
-    await databaseClient.query(`UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`, [
-      id,
-      firstName,
-      lastName,
-    ])
+      await databaseClient.query(`UPDATE tenants SET first_name=$2, last_name=$3 WHERE id=$1`, [
+        id,
+        firstName,
+        lastName,
+      ])
 
-    return {}
-  })
+      return {}
+    })
 
-  app.delete('/api/tenants/:id', async (req) => {
-    const {id} = req.params
+  _ = /**@type {typeof app.post<{Params: {id: string}}>}*/ (app.delete)(
+    '/api/tenants/:id',
+    async (req) => {
+      const {id} = req.params
 
-    await databaseClient.query('DELETE FROM tenants WHERE id=$1', [id])
+      await databaseClient.query('DELETE FROM tenants WHERE id=$1', [id])
 
-    return {}
-  })
+      return {}
+    },
+  )
 
   return app
 
@@ -62,7 +76,7 @@ export default async function createApp({databaseConnectionString}) {
 }
 
 export const databaseSchema = `
-  CREATE TABLE tenants (
+  CREATE TABLE IF NOT EXISTS tenants (
     id UUID PRIMARY KEY,
     first_name VARCHAR,
     last_name VARCHAR
