@@ -1,9 +1,9 @@
 import {join, dirname} from 'path'
-import {describe, it, before, after, beforeEach} from '@seasquared/mocha-commons'
+import {describe, it, before, after, beforeEach} from '@giltayar/mocha-commons'
 import {expect} from 'chai'
 import {v4 as uuid} from 'uuid'
-import {fetchAsJsonWithJsonBody, fetchAsJson} from '@seasquared/http-commons'
-import {runDockerCompose} from '@seasquared/docker-compose-testkit'
+import {fetchAsJsonWithJsonBody, fetchAsJson} from '@giltayar/http-commons'
+import {runDockerCompose} from '@giltayar/docker-compose-testkit'
 import {prepareDatabase, resetDatabase} from '../commons/setup.js'
 import {setupApp} from './setup-app.js'
 

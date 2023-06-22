@@ -1,4 +1,4 @@
-import * as fc from '@seasquared/functional-commons'
+import * as fc from '@giltayar/functional-commons'
 import cc from 'camel-case'
 
 /**
