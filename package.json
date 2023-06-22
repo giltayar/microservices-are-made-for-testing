@@ -6,7 +6,7 @@
     ".": "./src/microservices-are-made-for-testing.js"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   },
   "type": "module",
   "files": [
