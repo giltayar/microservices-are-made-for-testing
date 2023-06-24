@@ -4,8 +4,8 @@ import {expect} from 'chai'
 import {v4 as uuid} from 'uuid'
 import {fetchAsJsonWithJsonBody, fetchAsJson} from '@giltayar/http-commons'
 import {runDockerCompose} from '@giltayar/docker-compose-testkit'
-import {postgresHealthCheck, prepareDatabase, resetDatabase} from '../commons/setup.js'
-import {setupApp} from './setup-app.js'
+import {postgresHealthCheck, setupDatabaseSchema, resetDatabaseTables} from '../commons/setup.js'
+import {runApp} from './run-app.js'
 
 const __dirname = dirname(new URL(import.meta.url).pathname)
 
@@ -15,13 +15,15 @@ describe.skip('delete-user (it)', function () {
   let teardown, findAddress
   before(async () => ({teardown, findAddress} = await runDockerCompose(composePath)))
 
-  before(async () => prepareDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
-  beforeEach(async () => resetDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
+  before(async () => setupDatabaseSchema(await findAddress('postgres', 5432, postgresHealthCheck)))
+  beforeEach(async () =>
+    resetDatabaseTables(await findAddress('postgres', 5432, postgresHealthCheck)),
+  )
 
   let baseUrl
   before(
     async () =>
-      ({baseUrl} = await setupApp(await findAddress('postgres', 5432, postgresHealthCheck))),
+      ({baseUrl} = await runApp(await findAddress('postgres', 5432, postgresHealthCheck))),
   )
 
   after(() => teardown())

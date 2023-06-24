@@ -4,7 +4,7 @@ import {databaseSchema} from '../../src/microservices-are-made-for-testing.js'
 /**
  * @param {string} postgresAddress
  */
-export async function prepareDatabase(postgresAddress) {
+export async function setupDatabaseSchema(postgresAddress) {
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new pg.Client({connectionString})
   await client.connect()
@@ -17,7 +17,7 @@ export async function prepareDatabase(postgresAddress) {
 /**
  * @param {string} postgresAddress
  */
-export async function resetDatabase(postgresAddress) {
+export async function resetDatabaseTables(postgresAddress) {
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new pg.Client({connectionString})
   await client.connect()
