@@ -2,18 +2,9 @@ import pg from 'pg'
 
 import {databaseSchema} from '../../src/microservices-are-made-for-testing.js'
 /**
- * @param {{ (serviceName: string, port?: number | undefined, options?: { serviceIndex?: number | undefined; healthCheck?: ((address: string) => Promise<void>) | undefined; } | undefined): Promise<string>; (arg0: string, arg1: number): any; }} findAddress
+ * @param {string} postgresAddress
  */
-export async function prepareDatabase(findAddress) {
-  const postgresAddress = await findAddress('postgres', 5432, {
-    healthCheck: async (address) => {
-      const client = new pg.Client({
-        connectionString: `postgresql://user:password@${address}/postgres`,
-      })
-      await client.connect()
-      await client.end()
-    },
-  })
+export async function prepareDatabase(postgresAddress) {
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new pg.Client({connectionString})
   await client.connect()
@@ -24,11 +15,9 @@ export async function prepareDatabase(findAddress) {
 }
 
 /**
- * @param {{ (serviceName: string, port?: number | undefined, options?: { serviceIndex?: number | undefined; healthCheck?: ((address: string) => Promise<void>) | undefined; } | undefined): Promise<string>; (arg0: string, arg1: number): any; }} findAddress
+ * @param {string} postgresAddress
  */
-export async function resetDatabase(findAddress) {
-  const postgresAddress = await findAddress('postgres', 5432)
-
+export async function resetDatabase(postgresAddress) {
   const connectionString = `postgresql://user:password@${postgresAddress}/postgres`
   const client = new pg.Client({connectionString})
   await client.connect()
@@ -36,4 +25,14 @@ export async function resetDatabase(findAddress) {
   await client.query(`DELETE FROM tenants`)
 
   await client.end()
+}
+
+export const postgresHealthCheck = {
+  healthCheck: async (address) => {
+    const client = new pg.Client({
+      connectionString: `postgresql://user:password@${address}/postgres`,
+    })
+    await client.connect()
+    await client.end()
+  },
 }

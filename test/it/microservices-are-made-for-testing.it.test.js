@@ -1,34 +1,39 @@
 import {join, dirname} from 'path'
-import {describe, it, before, after, beforeEach} from '@giltayar/mocha-commons'
+import {describe, before, after, beforeEach, it} from 'mocha'
 import {expect} from 'chai'
 import {v4 as uuid} from 'uuid'
 import {fetchAsJsonWithJsonBody, fetchAsJson, fetchAsText} from '@giltayar/http-commons'
 import {runDockerCompose} from '@giltayar/docker-compose-testkit'
-import {prepareDatabase, resetDatabase} from '../commons/setup.js'
+import {postgresHealthCheck, prepareDatabase, resetDatabase} from '../commons/setup.js'
 import {setupApp} from './setup-app.js'
 
 const __dirname = dirname(new URL(import.meta.url).pathname)
 
 describe('microservices-are-made-for-testing (it)', function () {
-  const composePath = join(__dirname, 'docker-compose.yml')
+  let teardown, findAddress
+  before(
+    async () =>
+      ({teardown, findAddress} = await runDockerCompose(join(__dirname, 'docker-compose.yml'))),
+  )
+  after(() => teardown())
 
-  const {teardown, findAddress} = before(async () => runDockerCompose(composePath))
+  before(async () => prepareDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
+  beforeEach(async () => resetDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
 
-  before(() => prepareDatabase(findAddress()))
-  beforeEach(() => resetDatabase(findAddress()))
-
-  const {baseUrl} = before(() => setupApp(findAddress()))
-
-  after(() => teardown()())
+  let baseUrl
+  before(
+    async () =>
+      ({baseUrl} = await setupApp(await findAddress('postgres', 5432, postgresHealthCheck))),
+  )
 
   it('should return OK on /', async () => {
-    const text = await fetchAsText(`${baseUrl()}/`)
+    const text = await fetchAsText(`${baseUrl}/`)
     expect(text).to.equal('OK')
   })
 
   it('should return empty array on no tenants', async () => {
     // fetch tenant list
-    const tenantList = await fetchAsJson(`${baseUrl()}/api/tenants`)
+    const tenantList = await fetchAsJson(`${baseUrl}/api/tenants`)
 
     // check that it's empty
     expect(tenantList).to.eql([])
@@ -38,10 +43,10 @@ describe('microservices-are-made-for-testing (it)', function () {
     const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
 
     // Add a tenant
-    await fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant.id}`, tenant)
+    await fetchAsJsonWithJsonBody(`${baseUrl}/api/tenants/${tenant.id}`, tenant)
 
     // Check tenant was added
-    const tenantList = await fetchAsJson(`${baseUrl()}/api/tenants`)
+    const tenantList = await fetchAsJson(`${baseUrl}/api/tenants`)
     expect(tenantList).to.eql([tenant])
   })
 
@@ -49,16 +54,16 @@ describe('microservices-are-made-for-testing (it)', function () {
     const tenant = {id: uuid(), firstName: 'Gil', lastName: 'Tayar'}
 
     // Add a tenant
-    await fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${tenant.id}`, tenant)
+    await fetchAsJsonWithJsonBody(`${baseUrl}/api/tenants/${tenant.id}`, tenant)
 
     // Update its last name
     const updatedTenant = {...tenant, lastName: 'Gayar'}
-    await fetchAsJsonWithJsonBody(`${baseUrl()}/api/tenants/${updatedTenant.id}`, updatedTenant, {
+    await fetchAsJsonWithJsonBody(`${baseUrl}/api/tenants/${updatedTenant.id}`, updatedTenant, {
       method: 'PUT',
     })
 
     // Check tenant was updated
-    expect(await fetchAsJson(`${baseUrl()}/api/tenants`)).to.eql([updatedTenant])
+    expect(await fetchAsJson(`${baseUrl}/api/tenants`)).to.eql([updatedTenant])
   })
 
   it('should delete a user', async () => {

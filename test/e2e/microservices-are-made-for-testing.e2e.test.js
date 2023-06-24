@@ -1,20 +1,21 @@
 import {join, dirname} from 'path'
-import {describe, it, before, after, beforeEach} from '@giltayar/mocha-commons'
+import {describe, it, before, after, beforeEach} from 'mocha'
 import {expect} from 'chai'
-// import {v4 as uuid} from 'uuid'
 import {runDockerCompose} from '@giltayar/docker-compose-testkit'
-import {prepareDatabase, resetDatabase} from '../commons/setup.js'
+import {postgresHealthCheck, prepareDatabase, resetDatabase} from '../commons/setup.js'
 
 const __dirname = dirname(new URL(import.meta.url).pathname)
 
 describe('microservices-are-made-for-testing (e2e)', function () {
-  const composePath = join(__dirname, 'docker-compose.yml')
+  let teardown, findAddress
+  before(
+    async () =>
+      ({teardown, findAddress} = await runDockerCompose(join(__dirname, 'docker-compose.yml'))),
+  )
+  after(() => teardown())
 
-  const {teardown, findAddress} = before(async () => runDockerCompose(composePath))
-
-  before(() => prepareDatabase(findAddress()))
-  beforeEach(() => resetDatabase(findAddress()))
-  after(() => teardown()())
+  before(async () => prepareDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
+  beforeEach(async () => resetDatabase(await findAddress('postgres', 5432, postgresHealthCheck)))
 
   it('should return users after they are added', async () => {
     expect(true).to.be.true
